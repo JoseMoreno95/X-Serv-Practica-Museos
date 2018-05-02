@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MuseosUser>
+<datos>
+  <usuario>{{ user }}</usuario>
+  <pagina>Pagina de {{ user }}</pagina>
+</datos>
+{% for fav in favoriteList %}
+    <museo>
+      <ID_ENTIDAD>{{ fav.ID_ENTIDAD }}</ID_ENTIDAD>
+      <NOMBRE>{{ fav.NOMBRE }}</NOMBRE>
+      <DESCRIPCION_ENTIDAD>{{ fav.DESCRIPCION_ENTIDAD }}</DESCRIPCION_ENTIDAD>
+      <HORARIO>{{ fav.HORARIO }}</HORARIO>
+      <TRANSPORTE>{{ fav.TRANSPORTE }}</TRANSPORTE>
+      <ACCESIBILIDAD>{{ fav.ACCESIBILIDAD }}</ACCESIBILIDAD>
+      <CONTENT_URL>{{ fav.CONTENT_URL }}</CONTENT_URL>
+      <NOMBRE_VIA>{{ fav.NOMBRE_VIA }}</NOMBRE_VIA>
+      <CLASE_VIAL>{{ fav.CLASE_VIAL }}</CLASE_VIAL>
+      <TIPO_NUM>{{fav.TIPO_NUM}}</TIPO_NUM>
+      <NUM>{{fav.NUM}}</NUM>
+      <LOCALIDAD>{{fav.LOCALIDAD}}</LOCALIDAD>
+      <PROVINCIA>{{fav.PROVINCIA}}</PROVINCIA>
+      <CODIGO_POSTAL>{{fav.CODIGO_POSTAL}}</CODIGO_POSTAL>
+      <BARRIO>{{fav.BARRIO}}</BARRIO>
+      <DISTRITO>{{fav.DISTRITO}}</DISTRITO>
+      <COORDENADA_X>{{fav.COORDENADA_X}}</COORDENADA_X>
+      <COORDENADA_Y>{{fav.COORDENADA_Y}}</COORDENADA_Y>
+      <LATITUD>{{fav.LATITUD}}</LATITUD>
+      <LONGITUD>{{fav.LONGITUD}}</LONGITUD>
+      <TELEFONO>{{fav.TELEFONO}}</TELEFONO>
+      <FAX>{{fav.FAX}}</FAX>
+      <EMAIL>{{fav.EMAIL}}</EMAIL>
+      <TIPO>{{fav.TIPO}}</TIPO>
+    </museo>
+{% endfor %}
+</MuseosUser>

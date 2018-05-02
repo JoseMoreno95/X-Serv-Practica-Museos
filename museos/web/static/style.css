@@ -1,0 +1,213 @@
+body
+{
+    font-family: 'Helvetica', sans-serif;
+    color: #444444;
+    font-size: 9pt;
+    background-color: #EEF4F8;
+}
+
+#banner {
+    color: white;
+		width: 110;
+		padding-right: 15px;
+		padding-left: 15px;
+		float: left;
+}
+
+.topnav {
+    background-color: #466F70;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    text-decoration: none;
+		font-size: 30px;
+		width: 200px;
+		height: 80px;
+		line-height: 80px;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+		height: 80px;
+}
+
+.topnav a.active {
+    background-color: #65A1A2;
+    color: white;
+		height: 80px;
+}
+
+#login {
+		font-size: 20px;
+		float: right;
+		height: 40px;
+		line-height: 40px;
+		color: white;
+		padding-right: 30px;
+		padding: 0px 50px;
+}
+
+#logout {
+		font-size: 20px;
+		float: right;
+		height: 80px;
+		line-height: 40px;
+		color: white;
+		padding-right: 0px;
+		padding: 0px 0px;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #466F70;
+    color: white;
+    text-align: center;
+}
+
+#nav{
+  margin-top: 12px;
+   width: 338px;
+
+   height: 600px;
+   float:right;
+   border-width: 1px;
+   border-style: solid;
+   border-color: #000000;
+}
+
+#cuerpo{
+  margin-left: 150px ;
+   width: 1250px;
+   height: auto;
+   position: absolute;
+   border-width: 1px;
+   border-style: solid;
+   border-color: #000000;
+}
+
+.titulonav{
+
+   font-size: 25px;
+   background-color: #999999;
+   color: #ffffff;
+   padding: 4px;
+}
+
+.cuerporec{
+   margin-top: 4px;
+   margin-right: 0pt;
+   margin-bottom: 10px;
+   margin-left: 0pt;
+}
+
+.cuerporec ul{
+   margin-top: 5px;
+   margin-right: 0px;
+   margin-bottom: 20px;
+   margin-left: 0px;
+   padding-top: 0pt;
+   padding-right: 0pt;
+   padding-bottom: 0pt;
+   padding-left: 1px;
+   list-style-type: none;
+   list-style-image: none;
+   list-style-position: outside;
+}
+
+.cuerporec li{
+   border-width: 1px;
+   border-style: solid;
+   border-color: #d7d7d7;
+   text-align: center;
+   padding: 1px 0 2px 2px;
+   font-size: 15pt;
+   padding-bottom: 2px;
+   margin-top: 2px;
+   margin-right: 0pt;
+   margin-bottom: 2px;
+   margin-left: 0pt;
+}
+
+.cuerporec a{
+   text-decoration: none;
+}
+
+#comentarios{
+  margin-top: 12px;
+   width: 1050px;
+   height: 600px;
+   position: absolute;
+   border-width: 1px;
+   border-style: solid;
+   border-color: #000000;
+}
+
+#museos{
+   margin-top: 12px;
+   width: 1422px;
+   height: auto;
+   position: absolute;
+   border-width: 1px;
+   border-style: solid;
+   border-color: #000000;
+}
+
+#caja_comentario{
+  width: 500px;
+  height: 200px;
+}
+
+.caja_comentario{
+  font-size: 20px;
+}
+
+.titulos{
+  font-size: 25px;
+}
+
+.desplegable{
+  font-size: 18px;
+}
+
+.direccion{
+  font-size: 20px;
+}
+
+.info{
+  font-size: 15px;
+}
+
+.titulos_museo{
+  font-size: 35px;
+}
+
+.texto_museo{
+  font-size: 30px;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+.pagination a.active {
+    background-color: #65A1A2;
+    color: white;
+    border-radius: 10px;
+}

@@ -1,0 +1,63 @@
+{% load staticfiles %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
+<link rel="stylesheet" href="{% static 'style.css'%}" />
+
+<div class="topnav">
+  <style>
+
+  {{ formato }}
+
+  </style>
+  <img id="banner" src="{% static 'logo.png'%}" />
+  <a class="active" href="/">Inicio</a>
+  <a href="/{{ user }}">Área personal</a>
+  <a href="/museos">Museos</a>
+  {% ifnotequal login 0 %}
+  <a href="/{{ user }}/preferencias">Preferencias</a>
+  {% endifnotequal %}
+  <a href="/about">About</a>
+  {% ifequal login 0 %}
+    <div id="login">
+      <form action='/login/' method='post'>
+        Usuario &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="Usuario" > <input type="submit" name='registro' value="Registro" class="caja"><br>
+        Contraseña <input type="password" name="Contraseña" > <input type="submit" name='login' value=" Login " class="caja">
+      </form>
+    </div>
+  {% endifequal %}
+  {% ifnotequal login 0 %}
+    <div >
+
+    <a id="logout" href="/logout/">Bienvenido, {{ user }} Logout</a>
+
+    </div>
+  {% endifnotequal %}
+</div>
+
+<div id="nav">
+   <div class="titulonav">
+   <center>Páginas personales</center>
+   </div>
+
+   <div class="cuerporec">
+   <ul>
+     {{ userList |safe}}
+   </ul>
+   </div>
+</div>
+<div id='comentarios'>
+{{ body |safe}}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+<!--{{ link |safe}}-->
+
+<div class="footer">
+  <p>Esta aplicación utiliza datos del portal de datos abiertos de la ciudad de Madrid<br>
+  <a href="https://datos.madrid.es/portal/site/egob/menuitem.c05c1f754a33a9fbe4b2e4b284f1a5a0/?vgnextoid=118f2fdbecc63410VgnVCM1000000b205a0aRCRD&vgnextchannel=374512b9ace9f310VgnVCM100000171f5a0aRCRD&vgnextfmt=default"><font color="lightblue">Museos de la ciudad de Madrid</font></a>
+</p>
+</div>
