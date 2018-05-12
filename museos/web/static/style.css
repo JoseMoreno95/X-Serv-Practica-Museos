@@ -75,10 +75,10 @@ body
 
 #nav{
   margin-top: 12px;
-   width: 338px;
-
-   height: 600px;
+   width: 22%;
+   height: auto;
    float:right;
+   background-color: #DEF6FF;
    border-width: 1px;
    border-style: solid;
    border-color: #000000;
@@ -96,7 +96,7 @@ body
 
 .titulonav{
 
-   font-size: 25px;
+   font-size: 2vw;
    background-color: #999999;
    color: #ffffff;
    padding: 4px;
@@ -143,9 +143,9 @@ body
 
 #comentarios{
   margin-top: 12px;
-   width: 1050px;
-   height: 600px;
-   position: absolute;
+   width: 75%;
+   height: auto;
+   background-color: #DEF6FF;
    border-width: 1px;
    border-style: solid;
    border-color: #000000;
@@ -153,9 +153,9 @@ body
 
 #museos{
    margin-top: 12px;
-   width: 1422px;
+   width: 100%;
    height: auto;
-   position: absolute;
+   background-color: #DEF6FF;
    border-width: 1px;
    border-style: solid;
    border-color: #000000;
@@ -211,3 +211,8 @@ body
     color: white;
     border-radius: 10px;
 }
+
+#map {
+  height: 600px;
+  width: 100%;
+ }
