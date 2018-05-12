@@ -43,6 +43,7 @@ def mainPage(request):
     template = get_template('index.html')
     topFive = range(5)
     list = '<br>'
+    markers = ''
     if request.method == 'GET' or (request.method == 'POST' and request.POST['accion'] == 'mostrar'):
         ranking = getRanking()
         list = (list + "<center><form action='/' method='post'><input type='hidden' name='accion' value='ocultar'>" +
@@ -50,9 +51,18 @@ def mainPage(request):
         for item in topFive:
             if ranking[item][1] != 0:
                 museum = Museo.objects.get(ID_ENTIDAD = ranking[item][0])
-                list = list + "<a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a> - <b>' + str(museum.comentario_set.count()) + ' Comentarios</b></br></br>'
+                list = list + "<center><a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a> - <b>' + str(museum.comentario_set.count()) + ' Comentarios</b></br></br>'
                 list = list + "<a class='direccion'>" + museum.CLASE_VIAL + ' ' + museum.NOMBRE_VIA + ', Nº ' + museum.NUM + ', ' + museum.LOCALIDAD + '</a></br></br>'
-                list = list + "<a class='info' href=" + "/museos/" + museum.ID_ENTIDAD + '/>Más información</a></br></br></br>'
+                list = list + "<a class='info' href=" + "/museos/" + museum.ID_ENTIDAD + '/>Más información</a></center></br></br>'
+                if museum.LATITUD != 'No disponible' and museum.LONGITUD != 'No disponible':
+                    markers = (markers +
+                    "var " + "X"  + museum.ID_ENTIDAD + "info = new google.maps.InfoWindow({" +
+                        "content:'<h1>" + museum.NOMBRE + "</h1>'});" +
+                    "var " + "X" + museum.ID_ENTIDAD + "marker = new google.maps.Marker({" +
+                        "position: {lat: " + museum.LATITUD + ", lng: " + museum.LONGITUD + " },map: map});" +
+                    "X" + museum.ID_ENTIDAD + "marker.addListener('click', function() {" +
+                    "X" + museum.ID_ENTIDAD + "info.open(map," + "X" + museum.ID_ENTIDAD + "marker);" +
+                    "});")
         if list == '':
             list = "<a class='titulos'>" + 'No hay museos con comentarios, ¡sé el primero en comentar!' + '</a></br></br>'
     elif request.method == 'POST' and request.POST['accion'] == 'ocultar':
@@ -62,9 +72,18 @@ def mainPage(request):
         for item in topFive:
             if ranking[item][1] != 0:
                 museum = Museo.objects.get(ID_ENTIDAD = ranking[item][0])
-                list = list + "<a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a> - <b>' + str(museum.comentario_set.count()) + ' Comentarios</b></br></br>'
+                list = list + "<center><a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a> - <b>' + str(museum.comentario_set.count()) + ' Comentarios</b></br></br>'
                 list = list + "<a class='direccion'>" + museum.CLASE_VIAL + ' ' + museum.NOMBRE_VIA + ', Nº ' + museum.NUM + ', ' + museum.LOCALIDAD + '</a></br></br>'
-                list = list + "<a class='info' href=" + "/museos/" + museum.ID_ENTIDAD + '/>Más información</a></br></br></br>'
+                list = list + "<a class='info' href=" + "/museos/" + museum.ID_ENTIDAD + '/>Más información</a></center></br></br>'
+                if museum.LATITUD != 'No disponbile' and museum.LONGITUD != 'No disponible':
+                    markers = (markers +
+                    "var " + "X"  + museum.ID_ENTIDAD + "info = new google.maps.InfoWindow({" +
+                        "content:'<h1>" + museum.NOMBRE + "</h1>'});" +
+                    "var " + "X" + museum.ID_ENTIDAD + "marker = new google.maps.Marker({" +
+                        "position: {lat: " + museum.LATITUD + ", lng: " + museum.LONGITUD + " },map: map});" +
+                    "X" + museum.ID_ENTIDAD + "marker.addListener('click', function() {" +
+                    "X" + museum.ID_ENTIDAD + "info.open(map," + "X" + museum.ID_ENTIDAD + "marker);" +
+                    "});")
         if list == '':
             list = "<a class='titulos'>" + 'No hay museos accesibles con comentarios, ¡sé el primero en comentar!' + '</a></br></br>'
     style = ''
@@ -94,7 +113,7 @@ def mainPage(request):
             userList = userList + "<li><a href='/" + user.username + "'>" + title.titulo + ' - ' + user.username + "</a></li></br>"
         except Titulo.DoesNotExist:
             userList = userList + "<li><a href='/" + user.username + "'>Página de " + user.username + "</a></li></br>"
-    return HttpResponse(template.render(Context({'body': list, 'login': login, 'user': request.user, 'userList': userList, 'formato': style})))
+    return HttpResponse(template.render(Context({'body': list, 'login': login, 'user': request.user, 'userList': userList, 'formato': style, 'markers': markers})))
 
 @csrf_exempt
 def museumsPage(request):
@@ -105,9 +124,20 @@ def museumsPage(request):
         distrito = Distrito.objects.get(nombre = request.POST['distrito'])
         museos = distrito.museo_set.all()
     list = ''
+    markers = ''
+    i = 1
     for museo in museos:
         list = list + "<a class='titulos'>" + museo.NOMBRE + '</a></br>'
         list = list + "<a class='info' href=" + "/museos/" + museo.ID_ENTIDAD + '/>Más información</a></br></br>'
+        if museo.LATITUD != 'No disponible' and museo.LONGITUD != 'No disponible':
+            markers = (markers +
+            "var " + "X"  + museo.ID_ENTIDAD + "info = new google.maps.InfoWindow({" +
+                "content:'<h1>" + museo.NOMBRE + "</h1>'});" +
+            "var " + "X" + museo.ID_ENTIDAD + "marker = new google.maps.Marker({" +
+                "position: {lat: " + museo.LATITUD + ", lng: " + museo.LONGITUD + " },map: map});" +
+            "X" + museo.ID_ENTIDAD + "marker.addListener('click', function() {" +
+            "X" + museo.ID_ENTIDAD + "info.open(map," + "X" + museo.ID_ENTIDAD + "marker);" +
+            "});")
     style = ''
     if request.user.is_authenticated():
         login = 1
@@ -131,7 +161,7 @@ def museumsPage(request):
     districtList = ''
     for distrito in distritos:
         districtList = districtList + "<option value='" + distrito.nombre + "'>" + distrito.nombre + "</option>"
-    return HttpResponse(template.render(Context({'body': list, 'login': login, 'user': request.user, 'districtList': districtList, 'formato': style})))
+    return HttpResponse(template.render(Context({'body': list, 'login': login, 'user': request.user, 'districtList': districtList, 'formato': style, 'markers': markers})))
 
 @csrf_exempt
 def museumPage(request, museumID):
@@ -192,7 +222,15 @@ def museumPage(request, museumID):
     else:
         login = 0
         favoriteButton = ''
-    return HttpResponse(template.render(Context({'body': message, 'login': login, 'user': request.user, 'id': museumID, 'fav': favoriteButton, 'formato': style})))
+    if museum.LATITUD != 'No disponbile' and museum.LONGITUD != 'No disponible':
+        marker = ("var " + "X"  + museum.ID_ENTIDAD + "info = new google.maps.InfoWindow({" +
+            "content:'<h1>" + museum.NOMBRE + "</h1>'});" +
+        "var " + "X" + museum.ID_ENTIDAD + "marker = new google.maps.Marker({" +
+            "position: {lat: " + museum.LATITUD + ", lng: " + museum.LONGITUD + " },map: map});" +
+        "X" + museum.ID_ENTIDAD + "marker.addListener('click', function() {" +
+        "X" + museum.ID_ENTIDAD + "info.open(map," + "X" + museum.ID_ENTIDAD + "marker);" +
+        "});")
+    return HttpResponse(template.render(Context({'body': message, 'login': login, 'user': request.user, 'id': museumID, 'fav': favoriteButton, 'formato': style, 'marker': marker})))
 
 @csrf_exempt
 def loginPage(request):
@@ -229,12 +267,22 @@ def userPage(request, user, number):
     favoritos = Favorito.objects.filter(usuario = user)
     group = range(5)
     count = 0;
+    markers = ''
     for favorito in favoritos:
         count = count + 1;
         museum = Museo.objects.get(NOMBRE = favorito.museo)
         listTotal = listTotal + "<a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a> - <b>' + str(museum.comentario_set.count()) + ' Comentarios</b></br></br>'
         listTotal = listTotal + "<a class='direccion'>" + museum.CLASE_VIAL + ' ' + museum.NOMBRE_VIA + ', Nº ' + museum.NUM + ', ' + museum.LOCALIDAD + '</a></br></br>'
         listTotal = listTotal + "<a class='info' href=" + "/museos/" + museum.ID_ENTIDAD + '/>Más información</a> <b>Fecha de guardado:' + (datetime.timedelta(hours=2) + favorito.fecha).strftime("%H:%M:%S %d-%m-%Y") + '</b></br></br></br>'
+        if museum.LATITUD != 'No disponible' and museum.LONGITUD != 'No disponible':
+            markers = (markers +
+            "var " + "X"  + museum.ID_ENTIDAD + "info = new google.maps.InfoWindow({" +
+                "content:'<h1>" + museum.NOMBRE + "</h1>'});" +
+            "var " + "X" + museum.ID_ENTIDAD + "marker = new google.maps.Marker({" +
+                "position: {lat: " + museum.LATITUD + ", lng: " + museum.LONGITUD + " },map: map});" +
+            "X" + museum.ID_ENTIDAD + "marker.addListener('click', function() {" +
+            "X" + museum.ID_ENTIDAD + "info.open(map," + "X" + museum.ID_ENTIDAD + "marker);" +
+            "});")
         if (count % 5) == 0:
             listTotal = listTotal + ';'
     group = listTotal.split(';')[int(number) - 1]
@@ -294,7 +342,7 @@ def userPage(request, user, number):
             "background-color: #" + color + ";}")
     else:
         login = 0
-    return HttpResponse(template.render(Context({'body': list, 'login': login, 'user': request.user, 'userList': userList, 'formato': style})))
+    return HttpResponse(template.render(Context({'body': list, 'login': login, 'user': request.user, 'userList': userList, 'formato': style, 'markers': markers})))
 
 def userXMLPage(request, user):
     template = get_template("personalXML.xml")
