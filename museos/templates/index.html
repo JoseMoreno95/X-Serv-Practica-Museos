@@ -33,7 +33,6 @@
     </div>
   {% endifnotequal %}
 </div>
-
 <div id="nav">
    <div class="titulonav">
    <center><b>Páginas personales</b></center>
@@ -47,13 +46,14 @@
 </div>
 <div id='comentarios'>
   <div class="titulonav">
-  <center><b>Listado de los cinco museos con más comentarios</b></center>
+  <center><b>Listado de museos</b></center>
   </div>
-  <body>
+
 {{ body |safe}}
-</body>
+</div>
+<div id="mapa">
 <div class="titulonav">
-  <center><b>Ubicación de los cinco museos con más comentarios
+  <center><b>Ubicación de los museos
 </b><center>
   </div>
 <div id="map"></div>
@@ -72,9 +72,6 @@
 <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRIKgXLoRvMGHsuBQH2aqhDtngA0jl8Cg&callback=initMap">
 </script>
-<br>
-<br>
-<br>
 </div>
 
 <div class="footer">

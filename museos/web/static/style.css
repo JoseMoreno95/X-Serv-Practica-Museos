@@ -75,9 +75,9 @@ body
 
 #nav{
   margin-top: 12px;
-   width: 22%;
-   height: auto;
-   float:right;
+   width: 16%;
+   height: 600px;
+   position:absolute;
    background-color: #DEF6FF;
    border-width: 1px;
    border-style: solid;
@@ -96,7 +96,7 @@ body
 
 .titulonav{
 
-   font-size: 2vw;
+   font-size: 1.5vw;
    background-color: #999999;
    color: #ffffff;
    padding: 4px;
@@ -143,9 +143,11 @@ body
 
 #comentarios{
   margin-top: 12px;
-   width: 75%;
-   height: auto;
+  margin-left: 260px;
+   width: 30%;
+   height: 600px;
    background-color: #DEF6FF;
+   position: absolute;
    border-width: 1px;
    border-style: solid;
    border-color: #000000;
@@ -153,12 +155,30 @@ body
 
 #museos{
    margin-top: 12px;
-   width: 100%;
-   height: auto;
+   width: 49%;
+   height: 600px;
+   position: absolute;
    background-color: #DEF6FF;
    border-width: 1px;
    border-style: solid;
    border-color: #000000;
+}
+
+#mapa{
+   margin-top: 12px;
+   float: right;
+   width: 49%;
+   height: 600px;
+   overflow: scroll;
+   background-color: #DEF6FF;
+   border-width: 1px;
+   border-style: solid;
+   border-color: #000000;
+}
+
+#scroll{
+   height: 500px;
+   overflow: scroll;
 }
 
 #caja_comentario{
@@ -213,6 +233,6 @@ body
 }
 
 #map {
-  height: 600px;
+  height: 570px;
   width: 100%;
  }

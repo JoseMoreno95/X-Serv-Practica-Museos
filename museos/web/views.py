@@ -47,7 +47,7 @@ def mainPage(request):
     if request.method == 'GET' or (request.method == 'POST' and request.POST['accion'] == 'mostrar'):
         ranking = getRanking()
         list = (list + "<center><form action='/' method='post'><input type='hidden' name='accion' value='ocultar'>" +
-            "<input class='desplegable' type='submit' value='Mostrar museos accesibles'></form></center>")
+            "<input class='desplegable' type='submit' value='Mostrar museos accesibles'></form></center><div id='scroll'>")
         for item in topFive:
             if ranking[item][1] != 0:
                 museum = Museo.objects.get(ID_ENTIDAD = ranking[item][0])
@@ -63,12 +63,13 @@ def mainPage(request):
                     "X" + museum.ID_ENTIDAD + "marker.addListener('click', function() {" +
                     "X" + museum.ID_ENTIDAD + "info.open(map," + "X" + museum.ID_ENTIDAD + "marker);" +
                     "});")
+        list = list + '</div>'
         if list == '':
             list = "<a class='titulos'>" + 'No hay museos con comentarios, ¡sé el primero en comentar!' + '</a></br></br>'
     elif request.method == 'POST' and request.POST['accion'] == 'ocultar':
         ranking = getAccessibleRanking()
         list = (list + "<center><form action='/' method='post'><input type='hidden' name='accion' value='mostrar'>" +
-            "<input class='desplegable' type='submit' value='Mostrar todos los museos'></form></center>")
+            "<input class='desplegable' type='submit' value='Mostrar todos los museos'></form></center><div id='scroll'>")
         for item in topFive:
             if ranking[item][1] != 0:
                 museum = Museo.objects.get(ID_ENTIDAD = ranking[item][0])
@@ -84,7 +85,8 @@ def mainPage(request):
                     "X" + museum.ID_ENTIDAD + "marker.addListener('click', function() {" +
                     "X" + museum.ID_ENTIDAD + "info.open(map," + "X" + museum.ID_ENTIDAD + "marker);" +
                     "});")
-        if list == '':
+        list = list + '</div>'
+        if list == '' or list == '</div>':
             list = "<a class='titulos'>" + 'No hay museos accesibles con comentarios, ¡sé el primero en comentar!' + '</a></br></br>'
     style = ''
     if request.user.is_authenticated():
@@ -127,8 +129,8 @@ def museumsPage(request):
     markers = ''
     i = 1
     for museo in museos:
-        list = list + "<a class='titulos'>" + museo.NOMBRE + '</a></br>'
-        list = list + "<a class='info' href=" + "/museos/" + museo.ID_ENTIDAD + '/>Más información</a></br></br>'
+        list = list + "<center><a class='titulos'>" + museo.NOMBRE + '</a></br>'
+        list = list + "<a class='info' href=" + "/museos/" + museo.ID_ENTIDAD + '/>Más información</a></center></br></br>'
         if museo.LATITUD != 'No disponible' and museo.LONGITUD != 'No disponible':
             markers = (markers +
             "var " + "X"  + museo.ID_ENTIDAD + "info = new google.maps.InfoWindow({" +
@@ -307,14 +309,16 @@ def userPage(request, user, number):
             list = list + "<a href='/" + user + "/" + str(number) + "'>&raquo;</a></div></center></br>"
         else:
             list = list + "<a href='/" + user + "/" + str(int(number) + 1) + "'>&raquo;</a></div></center></br>"
+    list = list + "<div id='scroll'><center>"
     for item in group:
         list = list + item
-    if list == '' and user != 'AnonymousUser':
-        list = "<a class='titulos'>" + 'Para que aparezcan museos en esta página, ' + user + ' tiene que añadirlos.' + '</a></br></br>'
-    elif list == '' and user == 'AnonymousUser':
-        list = "<a class='titulos'>" + 'Para ver tu página personal, primero tienes que loguearte.' + '</a></br></br>'
+    if (list == '' or list == "<div id='scroll'><center>") and user != 'AnonymousUser':
+        list = "<center><a class='titulos'>" + 'Para que aparezcan museos en esta página, ' + user + ' tiene que añadirlos.' + '</a></center></br></br>'
+    elif (list == '' or list == "<div id='scroll'><center>") and user == 'AnonymousUser':
+        list = "<center><a class='titulos'>" + 'Para ver tu página personal, primero tienes que loguearte.' + '</a></center></br></br>'
     else:
         list = list + "<center><a class='info' href='/" + user + "/xml'>XML del usuario</a></center>"
+    list = list + '</center></div>'
     users = User.objects.all()
     userList = ''
     for user in users:
