@@ -178,7 +178,7 @@ def museumPage(request, museumID):
     elif request.method == 'POST' and 'quitar' in request.POST:
         Favorito.objects.filter(museo = museum, usuario = request.user).delete()
     comments = museum.comentario_set.all()
-    message = ("<center><b><a class='titulos_museo'>" + museum.NOMBRE + '</a></b></center></br>'
+    message = ("<center><b><a class='titulos_museo'>" + museum.NOMBRE + "</a></b></center><div id='scroll'></br>"
     "<center><b><a class='titulos_museo'>Descripción</a></b></center></br>"
     "<center><a class='texto_museo'>" + museum.DESCRIPCION_ENTIDAD + '</a></center></br>'
     "<center><b><a class='titulos_museo'>Horario</a></b></center></br>"
