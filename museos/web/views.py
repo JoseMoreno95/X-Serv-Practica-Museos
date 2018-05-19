@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from .models import Museo, Distrito, Comentario, Favorito, Titulo, Letra, Color
+from .models import Museo, Distrito, Comentario, Favorito, Like, Titulo, Letra, Color
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
@@ -51,7 +51,7 @@ def mainPage(request):
         for item in topFive:
             if ranking[item][1] != 0:
                 museum = Museo.objects.get(ID_ENTIDAD = ranking[item][0])
-                list = list + "<center><a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a> - <b>' + str(museum.comentario_set.count()) + ' Comentarios</b></br></br>'
+                list = list + "<center><a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a><br><b>' + str(museum.comentario_set.count()) + ' Comentarios - ' + str(museum.like_set.count()) + ' Likes</b></br></br>'
                 list = list + "<a class='direccion'>" + museum.CLASE_VIAL + ' ' + museum.NOMBRE_VIA + ', Nº ' + museum.NUM + ', ' + museum.LOCALIDAD + '</a></br></br>'
                 list = list + "<a class='info' href=" + "/museos/" + museum.ID_ENTIDAD + '/>Más información</a></center></br></br>'
                 if museum.LATITUD != 'No disponible' and museum.LONGITUD != 'No disponible':
@@ -73,7 +73,7 @@ def mainPage(request):
         for item in topFive:
             if ranking[item][1] != 0:
                 museum = Museo.objects.get(ID_ENTIDAD = ranking[item][0])
-                list = list + "<center><a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a> - <b>' + str(museum.comentario_set.count()) + ' Comentarios</b></br></br>'
+                list = list + "<center><a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a><br><b>' + str(museum.comentario_set.count()) + ' Comentarios - ' + str(museum.like_set.count()) + ' Likes</b></br></br>'
                 list = list + "<a class='direccion'>" + museum.CLASE_VIAL + ' ' + museum.NOMBRE_VIA + ', Nº ' + museum.NUM + ', ' + museum.LOCALIDAD + '</a></br></br>'
                 list = list + "<a class='info' href=" + "/museos/" + museum.ID_ENTIDAD + '/>Más información</a></center></br></br>'
                 if museum.LATITUD != 'No disponbile' and museum.LONGITUD != 'No disponible':
@@ -177,6 +177,11 @@ def museumPage(request, museumID):
         fav.save()
     elif request.method == 'POST' and 'quitar' in request.POST:
         Favorito.objects.filter(museo = museum, usuario = request.user).delete()
+    elif request.method == 'POST' and 'mas' in request.POST:
+        like = Like(museo = museum, usuario = request.user)
+        like.save()
+    elif request.method == 'POST' and 'menos' in request.POST:
+        Like.objects.filter(museo = museum, usuario = request.user).delete()
     comments = museum.comentario_set.all()
     message = ("<center><b><a class='titulos_museo'>" + museum.NOMBRE + "</a></b></center><div id='scroll'></br>"
     "<center><b><a class='titulos_museo'>Descripción</a></b></center></br>"
@@ -208,6 +213,13 @@ def museumPage(request, museumID):
             favoriteButton = ("<center><form action='/museos/" + museumID + "/' method='post'><input type='hidden' name='añadir' value='fav'>" +
                 "<input class='desplegable' type='submit' value='Añadir a favoritos'></form></center>")
         try:
+            like = Like.objects.get(museo = museum, usuario = request.user)
+            likeButton = ("<center><form action='/museos/" + museumID + "/' method='post'><input type='hidden' name='menos' value='like'>" +
+                "<input class='desplegable' type='submit' value='Dislike'></form></center>")
+        except Like.DoesNotExist:
+            likeButton = ("<center><form action='/museos/" + museumID + "/' method='post'><input type='hidden' name='mas' value='like'>" +
+                "<input class='desplegable' type='submit' value='Like'></form></center>")
+        try:
             color = Color.objects.get(usuario = request.user)
             color = color.color
         except Color.DoesNotExist:
@@ -224,6 +236,7 @@ def museumPage(request, museumID):
     else:
         login = 0
         favoriteButton = ''
+        likeButton = ''
     if museum.LATITUD != 'No disponbile' and museum.LONGITUD != 'No disponible':
         marker = ("var " + "X"  + museum.ID_ENTIDAD + "info = new google.maps.InfoWindow({" +
             "content:'<h1>" + museum.NOMBRE + "</h1>'});" +
@@ -232,7 +245,7 @@ def museumPage(request, museumID):
         "X" + museum.ID_ENTIDAD + "marker.addListener('click', function() {" +
         "X" + museum.ID_ENTIDAD + "info.open(map," + "X" + museum.ID_ENTIDAD + "marker);" +
         "});")
-    return HttpResponse(template.render(Context({'body': message, 'login': login, 'user': request.user, 'id': museumID, 'fav': favoriteButton, 'formato': style, 'marker': marker})))
+    return HttpResponse(template.render(Context({'body': message, 'login': login, 'user': request.user, 'id': museumID, 'fav': favoriteButton, 'like': likeButton, 'formato': style, 'marker': marker})))
 
 @csrf_exempt
 def loginPage(request):
@@ -273,7 +286,7 @@ def userPage(request, user, number):
     for favorito in favoritos:
         count = count + 1;
         museum = Museo.objects.get(NOMBRE = favorito.museo)
-        listTotal = listTotal + "<a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a> - <b>' + str(museum.comentario_set.count()) + ' Comentarios</b></br></br>'
+        listTotal = listTotal + "<a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a><br><b>' + str(museum.comentario_set.count()) + ' Comentarios - ' + str(museum.like_set.count()) + ' Likes</b></br></br>'
         listTotal = listTotal + "<a class='direccion'>" + museum.CLASE_VIAL + ' ' + museum.NOMBRE_VIA + ', Nº ' + museum.NUM + ', ' + museum.LOCALIDAD + '</a></br></br>'
         listTotal = listTotal + "<a class='info' href=" + "/museos/" + museum.ID_ENTIDAD + '/>Más información</a> <b>Fecha de guardado:' + (datetime.timedelta(hours=2) + favorito.fecha).strftime("%H:%M:%S %d-%m-%Y") + '</b></br></br></br>'
         if museum.LATITUD != 'No disponible' and museum.LONGITUD != 'No disponible':
