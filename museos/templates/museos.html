@@ -20,8 +20,8 @@
   {% ifequal login 0 %}
     <div id="login">
       <form action='/login/' method='post'>
-        Usuario &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="Usuario" > <input type="submit" name='registro' value="Registro" class="caja"><br>
-        Contraseña <input type="password" name="Contraseña" > <input type="submit" name='login' value=" Login " class="caja">
+        Usuario &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="desplegable" type="text" name="Usuario" > <input class="desplegable" type="submit" name='registro' value="Registro" class="caja"><br>
+        Contraseña <input class="desplegable" type="password" name="Contraseña" > <input class="desplegable" type="submit" name='login' value=" Login " class="caja">
       </form>
     </div>
   {% endifequal %}
