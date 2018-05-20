@@ -255,6 +255,8 @@ def museumPage(request, museumID):
         "X" + museum.ID_ENTIDAD + "marker.addListener('click', function() {" +
         "X" + museum.ID_ENTIDAD + "info.open(map," + "X" + museum.ID_ENTIDAD + "marker);" +
         "});")
+    else:
+        marker = ''
     return HttpResponse(template.render(Context({'body': message, 'login': login, 'user': request.user, 'id': museumID, 'fav': favoriteButton, 'like': likeButton, 'formato': style, 'marker': marker})))
 
 @csrf_exempt
