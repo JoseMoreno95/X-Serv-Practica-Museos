@@ -48,46 +48,56 @@ def mainPage(request):
         ranking = getRanking()
         list = (list + "<center><form action='/' method='post'><input type='hidden' name='accion' value='ocultar'>" +
             "<input class='desplegable' type='submit' value='Mostrar museos accesibles'></form></center><div id='scroll'>")
-        for item in topFive:
-            if ranking[item][1] != 0:
-                museum = Museo.objects.get(ID_ENTIDAD = ranking[item][0])
-                list = list + "<center><a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a><br><b>' + str(museum.comentario_set.count()) + ' Comentarios - ' + str(museum.like_set.count()) + ' Likes</b></br></br>'
-                list = list + "<a class='direccion'>" + museum.CLASE_VIAL + ' ' + museum.NOMBRE_VIA + ', Nº ' + museum.NUM + ', ' + museum.LOCALIDAD + '</a></br></br>'
-                list = list + "<a class='info' href=" + "/museos/" + museum.ID_ENTIDAD + '/>Más información</a></center></br></br>'
-                if museum.LATITUD != 'No disponible' and museum.LONGITUD != 'No disponible':
-                    markers = (markers +
-                    "var " + "X"  + museum.ID_ENTIDAD + "info = new google.maps.InfoWindow({" +
-                        "content:'<h1>" + museum.NOMBRE + "</h1>'});" +
-                    "var " + "X" + museum.ID_ENTIDAD + "marker = new google.maps.Marker({" +
-                        "position: {lat: " + museum.LATITUD + ", lng: " + museum.LONGITUD + " },map: map});" +
-                    "X" + museum.ID_ENTIDAD + "marker.addListener('click', function() {" +
-                    "X" + museum.ID_ENTIDAD + "info.open(map," + "X" + museum.ID_ENTIDAD + "marker);" +
-                    "});")
-        list = list + '</div>'
-        if list == '':
-            list = "<a class='titulos'>" + 'No hay museos con comentarios, ¡sé el primero en comentar!' + '</a></br></br>'
+        if len(ranking) > 0:
+            for item in topFive:
+                if ranking[item][1] != 0:
+                    museum = Museo.objects.get(ID_ENTIDAD = ranking[item][0])
+                    list = list + "<center><a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a><br><b>' + str(museum.comentario_set.count()) + ' Comentarios - ' + str(museum.like_set.count()) + ' Likes</b></br></br>'
+                    list = list + "<a class='direccion'>" + museum.CLASE_VIAL + ' ' + museum.NOMBRE_VIA + ', Nº ' + museum.NUM + ', ' + museum.LOCALIDAD + '</a></br></br>'
+                    list = list + "<a class='info' href=" + "/museos/" + museum.ID_ENTIDAD + '/>Más información</a></center></br></br>'
+                    if museum.LATITUD != 'No disponible' and museum.LONGITUD != 'No disponible':
+                        markers = (markers +
+                        "var " + "X"  + museum.ID_ENTIDAD + "info = new google.maps.InfoWindow({" +
+                            "content:'<h1>" + museum.NOMBRE + "</h1>'});" +
+                        "var " + "X" + museum.ID_ENTIDAD + "marker = new google.maps.Marker({" +
+                            "position: {lat: " + museum.LATITUD + ", lng: " + museum.LONGITUD + " },map: map});" +
+                        "X" + museum.ID_ENTIDAD + "marker.addListener('click', function() {" +
+                        "X" + museum.ID_ENTIDAD + "info.open(map," + "X" + museum.ID_ENTIDAD + "marker);" +
+                        "});")
+            if ranking[0][1] == 0:
+                list = list + "<a class='titulos'><center>" + 'No hay museos con comentarios, ¡sé el primero en comentar!' + '</center></a></br></br></div>'
+            else:
+                list = list + '</div>'
+                list = list + "<center><a class='info' href='/xml'>XML de la página</a></center>"
+        else:
+            list = list + "<a class='titulos'><center>" + 'No hay museos con comentarios, ¡sé el primero en comentar!' + '</center></a></br></br></div>'
     elif request.method == 'POST' and request.POST['accion'] == 'ocultar':
         ranking = getAccessibleRanking()
         list = (list + "<center><form action='/' method='post'><input type='hidden' name='accion' value='mostrar'>" +
             "<input class='desplegable' type='submit' value='Mostrar todos los museos'></form></center><div id='scroll'>")
-        for item in topFive:
-            if ranking[item][1] != 0:
-                museum = Museo.objects.get(ID_ENTIDAD = ranking[item][0])
-                list = list + "<center><a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a><br><b>' + str(museum.comentario_set.count()) + ' Comentarios - ' + str(museum.like_set.count()) + ' Likes</b></br></br>'
-                list = list + "<a class='direccion'>" + museum.CLASE_VIAL + ' ' + museum.NOMBRE_VIA + ', Nº ' + museum.NUM + ', ' + museum.LOCALIDAD + '</a></br></br>'
-                list = list + "<a class='info' href=" + "/museos/" + museum.ID_ENTIDAD + '/>Más información</a></center></br></br>'
-                if museum.LATITUD != 'No disponbile' and museum.LONGITUD != 'No disponible':
-                    markers = (markers +
-                    "var " + "X"  + museum.ID_ENTIDAD + "info = new google.maps.InfoWindow({" +
-                        "content:'<h1>" + museum.NOMBRE + "</h1>'});" +
-                    "var " + "X" + museum.ID_ENTIDAD + "marker = new google.maps.Marker({" +
-                        "position: {lat: " + museum.LATITUD + ", lng: " + museum.LONGITUD + " },map: map});" +
-                    "X" + museum.ID_ENTIDAD + "marker.addListener('click', function() {" +
-                    "X" + museum.ID_ENTIDAD + "info.open(map," + "X" + museum.ID_ENTIDAD + "marker);" +
-                    "});")
-        list = list + '</div>'
-        if list == '' or list == '</div>':
-            list = "<a class='titulos'>" + 'No hay museos accesibles con comentarios, ¡sé el primero en comentar!' + '</a></br></br>'
+        if len(ranking) > 0:
+            for item in topFive:
+                if ranking[item][1] != 0:
+                    museum = Museo.objects.get(ID_ENTIDAD = ranking[item][0])
+                    list = list + "<center><a class='titulos' href=" + museum.CONTENT_URL + '>' + museum.NOMBRE + '</a><br><b>' + str(museum.comentario_set.count()) + ' Comentarios - ' + str(museum.like_set.count()) + ' Likes</b></br></br>'
+                    list = list + "<a class='direccion'>" + museum.CLASE_VIAL + ' ' + museum.NOMBRE_VIA + ', Nº ' + museum.NUM + ', ' + museum.LOCALIDAD + '</a></br></br>'
+                    list = list + "<a class='info' href=" + "/museos/" + museum.ID_ENTIDAD + '/>Más información</a></center></br></br>'
+                    if museum.LATITUD != 'No disponbile' and museum.LONGITUD != 'No disponible':
+                        markers = (markers +
+                        "var " + "X"  + museum.ID_ENTIDAD + "info = new google.maps.InfoWindow({" +
+                            "content:'<h1>" + museum.NOMBRE + "</h1>'});" +
+                        "var " + "X" + museum.ID_ENTIDAD + "marker = new google.maps.Marker({" +
+                            "position: {lat: " + museum.LATITUD + ", lng: " + museum.LONGITUD + " },map: map});" +
+                        "X" + museum.ID_ENTIDAD + "marker.addListener('click', function() {" +
+                        "X" + museum.ID_ENTIDAD + "info.open(map," + "X" + museum.ID_ENTIDAD + "marker);" +
+                        "});")
+            if ranking[0][1] == 0:
+                list = list + "<a class='titulos'><center>" + 'No hay museos accesibles con comentarios, ¡sé el primero en comentar!' + '</center></a></br></br></div>'
+            else:
+                list = list + '</div>'
+                list = list + "<center><a class='info' href='/xml'>XML de la página</a></center>"
+        else:
+            list = list + "<a class='titulos'><center>" + 'No hay museos accesibles con comentarios, ¡sé el primero en comentar!' + '</center></a></br></br></div>'
     style = ''
     if request.user.is_authenticated():
         login = 1
@@ -369,6 +379,31 @@ def userXMLPage(request, user):
         favoriteList = favoriteList + [favorite.museo]
     return HttpResponse(template.render(Context({'favoriteList': favoriteList, 'user': user})), content_type = "text/xml")
 
+def XMLPage(request):
+    template = get_template("personalXML.xml")
+    user = ''
+    topList = []
+    topMuseums = getRanking()
+    topFive = range(5)
+    for item in topFive:
+        if topMuseums[item][1] != 0:
+            museum = Museo.objects.get(ID_ENTIDAD = topMuseums[item][0])
+            topList = topList + [museum]
+    return HttpResponse(template.render(Context({'favoriteList': topList, 'user': user})), content_type = "text/xml")
+
+def XMLAccesiblePage(request):
+    template = get_template("personalXML.xml")
+    user = ''
+    topList = []
+    topMuseums = getAccessibleRanking()
+    topFive = range(5)
+    for item in topFive:
+        if topMuseums[item][1] != 0:
+            museum = Museo.objects.get(ID_ENTIDAD = topMuseums[item][0])
+            topList = topList + [museum]
+    return HttpResponse(template.render(Context({'favoriteList': topList, 'user': user})), content_type = "text/xml")
+
+
 @csrf_exempt
 def preferencesPage(request, user):
     template = get_template("preferencias.html")
@@ -436,7 +471,6 @@ def aboutPage(request):
             "background-color: #" + color + ";}")
     else:
         login = 0
-    # MOSTRAR LA INFORMACIÓN
     return HttpResponse(template.render(Context({'login': login, 'user': request.user, 'formato': style})))
 
 def updateDB(request):

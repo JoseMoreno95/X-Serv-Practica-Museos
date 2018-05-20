@@ -10,11 +10,11 @@
 
   </style>
   <img id="banner" src="{% static 'logo.png'%}" />
-  <a class="active" href="/">Inicio</a>
+  <a href="/">Inicio</a>
   <a href="/{{ user }}">Área personal</a>
   <a href="/museos">Museos</a>
   {% ifnotequal login 0 %}
-  <a href="/{{ user }}/preferencias">Preferencias</a>
+  <a class="active" href="/{{ user }}/preferencias">Preferencias</a>
   {% endifnotequal %}
   <a href="/about">About</a>
   {% ifequal login 0 %}

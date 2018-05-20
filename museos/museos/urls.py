@@ -5,6 +5,8 @@ from web import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.mainPage),
+    url(r'^xml/$', views.XMLPage),
+    url(r'^xmlaccesible/$', views.XMLAccesiblePage),
     url(r'^updatedb/$', views.updateDB),
     url(r'^museos/$', views.museumsPage),
     url(r'^museos/(\d+)/$', views.museumPage),

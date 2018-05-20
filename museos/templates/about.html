@@ -35,7 +35,20 @@
   {% endifnotequal %}
 </div>
 <body>
-{{ body |safe}}
+
+  <div id ='about'>
+    <div class="titulonav">
+      <center><b>About</b><center>
+    </div></br>
+Esta página web ha sido realizada por José María Moreno Rodríguez con motivo de la evaluación final de la asignatura Servicios y Aplicaciones en Redes de Ordenadores, perteneciente al Grado en Ingeniería en Sistemas de Telecomunicación.
+<br><br>
+El funcionamiento de la misma es el que sigue:<br>
+-> Inicio: se muestra el listado con las páginas personales y los museos con más comentarios (máximo cinco). En caso de que no los haya, aparece un mensaje informando de ello. También se muestran sus coordenadas en el mapa, en caso de que estén disponibles en la base de datos.
+<br>-> Página personal: se muestran los museos que cada usuario haya seleccionado como favoritos, además del mapa con sus coordenadas.
+<br>-> Museos: listado de todos los museos de Madrid con filtro por distrito.
+<br>-> Preferencias: únicamente visible si se está logueado. Aquí el usuario podrá cambiar tanto el título de su página como el tamaño de la letra y el color del fondo.
+
+</div>
 </body>
 <!--{{ link |safe}}-->
 
